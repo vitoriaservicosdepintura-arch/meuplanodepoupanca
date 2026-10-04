@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-gold-300: #f0d080;
+  --color-gold-400: #d4af37;
+  --color-gold-500: #c5a028;
+  --color-gold-600: #a88520;
+  --color-dark-bg: #080604;
+  --color-dark-900: #100d09;
+  --color-dark-800: #1a1510;
+  --color-dark-700: #241e17;
+  --color-dark-surface: #16120d;
+  --color-text-warm: #fdfbf7;
+  --color-text-muted: #8a8070;
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+  --color-novo-banco: #2563eb;
+  --color-wise: #06b6d4;
+  --color-brl: #16a34a;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: var(--color-dark-bg);
+  color: var(--color-text-warm);
+  overscroll-behavior-y: none;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Premium Scrollbar ── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.25);
+  border-radius: 4px;
+}
+
+@layer components {
+
+  /* ── Cards glassmorphism 3D ── */
+  .card {
+    background: linear-gradient(135deg,
+        rgba(26, 21, 16, 0.92) 0%,
+        rgba(20, 16, 10, 0.78) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.12);
+    border-radius: 20px;
+    padding: 1.25rem;
+    backdrop-filter: blur(24px);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.04) inset,
+      0 -1px 0 rgba(0, 0, 0, 0.4) inset,
+      0 8px 32px rgba(0, 0, 0, 0.6),
+      0 2px 8px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ── Card com brilho dourado ── */
+  .card-gold {
+    background: linear-gradient(135deg,
+        rgba(212, 175, 55, 0.18) 0%,
+        rgba(20, 16, 10, 0.92) 60%,
+        rgba(212, 175, 55, 0.06) 100%);
+    border-color: rgba(212, 175, 55, 0.35);
+    box-shadow:
+      0 0 0 1px rgba(212, 175, 55, 0.1),
+      0 8px 40px rgba(212, 175, 55, 0.12),
+      0 2px 8px rgba(0, 0, 0, 0.5),
+      0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  }
+
+  /* ── Labels ── */
+  .label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* ── Campos de formulário ── */
+  .field {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    background: rgba(10, 8, 5, 0.7);
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    color: var(--color-text-warm);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+  }
+
+  .field::placeholder {
+    color: rgba(138, 128, 112, 0.5);
+  }
+
+  .field:focus {
+    border-color: rgba(212, 175, 55, 0.5);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  }
+
+  /* ── Botões ── */
+  .btn,
+  .btn-primary,
+  .btn-ghost,
+  .btn-bank {
+    display: inline-flex;
+    min-height: 52px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 14px;
+    padding: 0 1.25rem;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: all 0.18s ease;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+  }
+
+  .btn:active,
+  .btn-primary:active,
+  .btn-ghost:active {
+    transform: scale(0.97);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #d4af37 0%, #b59018 100%);
+    color: #080604;
+    box-shadow: 0 6px 24px rgba(212, 175, 55, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #e0c050 0%, #c5a028 100%);
+    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.5);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+  }
+
+  .btn-ghost {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(212, 175, 55, 0.18);
+    color: var(--color-gold-400);
+  }
+
+  .btn-ghost:hover {
+    background: rgba(212, 175, 55, 0.08);
+  }
+
+  /* ── Chips ── */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: 999px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    background: rgba(212, 175, 55, 0.08);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-gold-400);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Bank badges ── */
+  .badge-novobanco {
+    background: rgba(37, 99, 235, 0.18);
+    border: 1px solid rgba(37, 99, 235, 0.35);
+    color: #93c5fd;
+    border-radius: 8px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .badge-wise {
+    background: rgba(6, 182, 212, 0.18);
+    border: 1px solid rgba(6, 182, 212, 0.35);
+    color: #67e8f9;
+    border-radius: 8px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .badge-brl {
+    background: rgba(22, 163, 74, 0.18);
+    border: 1px solid rgba(22, 163, 74, 0.35);
+    color: #86efac;
+    border-radius: 8px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+}
+
+/* ── Number inputs ── */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ── Progress bar premium ── */
+.progress-track {
+  height: 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #c5a028, #f0d080, #c5a028);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ── Pulse gold animation ── */
+@keyframes pulse-gold {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba(212, 175, 55, 0.1);
+  }
+}
+
+.pulse-gold {
+  animation: pulse-gold 2s ease-in-out infinite;
+}
+
+/* ── Slide-in modal ── */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slide-up 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ── Print ── */
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
