@@ -21,10 +21,20 @@ export function computeSummary(
 
   const totalSaved = round2(running);
   const goal = settings.goal;
-  const totalReceived = round2(ordered.reduce((sum, w) => sum + w.received, 0));
-  const totalFood = round2(ordered.reduce((sum, w) => sum + w.food, 0));
+  const totalReceived = round2(
+    ordered
+      .filter((w) => w.confirmed || w.realSaved > 0 || w.received !== settings.weeklyIncome || w.food !== settings.weeklyFoodBudget)
+      .reduce((sum, w) => sum + w.received, 0)
+  );
+  const totalFood = round2(
+    ordered
+      .filter((w) => w.confirmed || w.realSaved > 0 || w.received !== settings.weeklyIncome || w.food !== settings.weeklyFoodBudget)
+      .reduce((sum, w) => sum + w.food, 0)
+  );
   const totalExpectedSavings = round2(
-    ordered.reduce((sum, w) => sum + (w.received - w.food), 0),
+    ordered
+      .filter((w) => w.confirmed || w.realSaved > 0 || w.received !== settings.weeklyIncome || w.food !== settings.weeklyFoodBudget)
+      .reduce((sum, w) => sum + (w.received - w.food), 0)
   );
   const transactionsBalance = round2(
     transactions.reduce((sum, t) => sum + t.income - t.expense, 0),
