@@ -18,7 +18,7 @@ const CACHE_KEY = "mpp_state_cache_v1";
 const QUEUE_KEY = "mpp_pending_week_updates_v1";
 
 type WeekPatch = Partial<
-  Pick<Week, "received" | "food" | "realSaved" | "confirmed" | "notes" | "savedNovoBanco" | "savedWise" | "savedBrl" | "workedSaturday">
+  Pick<Week, "startDate" | "endDate" | "received" | "food" | "realSaved" | "confirmed" | "notes" | "savedNovoBanco" | "savedWise" | "savedBrl" | "workedSaturday">
 >;
 
 type Ctx = {

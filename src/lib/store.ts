@@ -140,9 +140,11 @@ export async function getState(): Promise<AppState> {
 
 export async function saveWeek(
   weekNumber: number,
-  patch: Partial<Pick<Week, "received" | "food" | "realSaved" | "confirmed" | "notes" | "savedNovoBanco" | "savedWise" | "savedBrl" | "workedSaturday">>,
+  patch: Partial<Pick<Week, "startDate" | "endDate" | "received" | "food" | "realSaved" | "confirmed" | "notes" | "savedNovoBanco" | "savedWise" | "savedBrl" | "workedSaturday">>,
 ): Promise<void> {
   const update: Record<string, unknown> = { updatedAt: new Date() };
+  if (patch.startDate !== undefined) update.startDate = patch.startDate;
+  if (patch.endDate !== undefined) update.endDate = patch.endDate;
   if (patch.received !== undefined) update.received = round2(patch.received);
   if (patch.food !== undefined) update.food = round2(patch.food);
   if (patch.realSaved !== undefined) update.realSaved = round2(patch.realSaved);

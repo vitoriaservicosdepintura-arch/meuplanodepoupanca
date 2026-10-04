@@ -18,6 +18,8 @@ export async function PATCH(request: Request) {
   }
 
   await saveWeek(weekNumber, {
+    startDate: typeof body.startDate === "string" ? body.startDate : undefined,
+    endDate: typeof body.endDate === "string" ? body.endDate : undefined,
     received: num(body.received),
     food: num(body.food),
     realSaved: num(body.realSaved),

@@ -41,6 +41,8 @@ export default function WeekEditor({ week, onClose }: { week: Week; onClose: () 
   const [savedBrl, setSavedBrl] = useState(String(week.savedBrl ?? 0));
   const [workedSaturday, setWorkedSaturday] = useState(week.workedSaturday ?? false);
   const [notes, setNotes] = useState(week.notes);
+  const [startDate, setStartDate] = useState(week.startDate);
+  const [endDate, setEndDate] = useState(week.endDate);
   const [confirmed, setConfirmed] = useState(week.confirmed);
   const [busy, setBusy] = useState(false);
   const [liveRate, setLiveRate] = useState<number | null>(null);
@@ -65,6 +67,8 @@ export default function WeekEditor({ week, onClose }: { week: Week; onClose: () 
     setBusy(true);
     try {
       await updateWeek(week.weekNumber, {
+        startDate,
+        endDate,
         received: Number(received) || 0,
         food: Number(food) || 0,
         realSaved: Number(realSaved) || 0,
@@ -92,9 +96,21 @@ export default function WeekEditor({ week, onClose }: { week: Week; onClose: () 
         <div className="mb-5 flex items-start justify-between">
           <div>
             <h2 className="text-xl font-black">Semana {week.weekNumber}</h2>
-            <p className="text-xs text-[color:var(--color-text-muted)]">
-              {formatRange(week.startDate, week.endDate)}
-            </p>
+            <div className="flex gap-2 items-center mt-1">
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="bg-black/20 text-xs px-2 py-1 rounded"
+              />
+              <span className="text-[color:var(--color-text-muted)]">até</span>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="bg-black/20 text-xs px-2 py-1 rounded"
+              />
+            </div>
           </div>
           <button type="button" onClick={onClose}
             className="rounded-full border border-white/10 px-3 py-1.5 text-sm text-[color:var(--color-text-muted)]">
@@ -175,12 +191,32 @@ export default function WeekEditor({ week, onClose }: { week: Week; onClose: () 
           </div>
 
           {/* Botões */}
-          <div className="space-y-2 pt-1">
-            <button type="button" disabled={busy} onClick={() => save(true)} className="btn-primary">
+          <div className="space-y-2 pt-1 flex flex-col items-center">
+            <button type="button" disabled={busy} onClick={() => save(true)} className="btn-primary w-full">
               {busy ? "Salvando…" : "💾 SALVAR E CONFIRMAR"}
             </button>
-            <button type="button" disabled={busy} onClick={() => save(confirmed)} className="btn-ghost">
+            <button type="button" disabled={busy} onClick={() => save(confirmed)} className="btn-ghost w-full">
               Salvar sem confirmar
+            </button>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => {
+                const ok = window.confirm("Deseja zerar os valores desta semana?");
+                if (!ok) return;
+                setReceived("0");
+                setFood("0");
+                setRealSaved("0");
+                setNovoBanco("0");
+                setWise("0");
+                setSavedBrl("0");
+                setWorkedSaturday(false);
+                setNotes("");
+                setConfirmed(false);
+              }}
+              className="mt-4 text-xs font-semibold text-red-500/80 uppercase tracking-widest p-2"
+            >
+              Excluir / Limpar Semana
             </button>
           </div>
         </div>
