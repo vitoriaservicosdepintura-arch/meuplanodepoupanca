@@ -183,5 +183,23 @@ export async function saveSettings(patch: Partial<Settings>): Promise<Settings> 
         .where(eq(weeks.weekNumber, period.week));
     }
   }
+
+  // --- CASCADE: update all non-confirmed weeks with new income/food defaults ---
+  const incomeChanged = patch.weeklyIncome !== undefined && patch.weeklyIncome !== current.weeklyIncome;
+  const foodChanged = patch.weeklyFoodBudget !== undefined && patch.weeklyFoodBudget !== current.weeklyFoodBudget;
+
+  if (incomeChanged || foodChanged) {
+    // Only update weeks that haven't been manually confirmed or saved by the user,
+    // i.e., weeks with default values (not confirmed AND realSaved == 0).
+    const allWeeks = await db.select().from(weeks);
+    for (const week of allWeeks) {
+      if (week.confirmed || week.realSaved > 0) continue; // skip manually registered weeks
+      const updates: Record<string, unknown> = { updatedAt: new Date() };
+      if (incomeChanged) updates.received = next.weeklyIncome;
+      if (foodChanged) updates.food = next.weeklyFoodBudget;
+      await db.update(weeks).set(updates).where(eq(weeks.weekNumber, week.weekNumber));
+    }
+  }
+
   return next;
 }
