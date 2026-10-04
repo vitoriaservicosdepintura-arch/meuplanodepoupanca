@@ -40,6 +40,7 @@ export default function WeekEditor({ week, onClose }: { week: Week; onClose: () 
   const [wise, setWise] = useState(String(week.savedWise ?? 0));
   const [savedBrl, setSavedBrl] = useState(String(week.savedBrl ?? 0));
   const [workedSaturday, setWorkedSaturday] = useState(week.workedSaturday ?? false);
+  const [missedDay, setMissedDay] = useState(false);
   const [notes, setNotes] = useState(week.notes);
   const [startDate, setStartDate] = useState(week.startDate);
   const [endDate, setEndDate] = useState(week.endDate);
@@ -168,6 +169,25 @@ export default function WeekEditor({ week, onClose }: { week: Week; onClose: () 
                 });
               }}
               className="h-6 w-6 accent-yellow-500"
+            />
+          </label>
+
+          {/* Falta */}
+          <label className="flex items-center justify-between rounded-2xl border border-red-500/20 bg-red-500/5 px-4 py-3">
+            <div>
+              <span className="text-sm font-medium">🤒 Teve falta? (−€112)</span>
+              <p className="text-[10px] text-[color:var(--color-text-muted)] mt-0.5">Desconta um dia de trabalho</p>
+            </div>
+            <input type="checkbox" checked={missedDay}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setMissedDay(checked);
+                setReceived((prev) => {
+                  const val = Number(prev) || 0;
+                  return String(Math.max(0, val + (checked ? -112 : 112)));
+                });
+              }}
+              className="h-6 w-6 accent-red-500"
             />
           </label>
 
