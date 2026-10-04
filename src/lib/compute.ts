@@ -21,8 +21,16 @@ export function computeSummary(
 
   const totalSaved = round2(running);
   const goal = settings.goal;
-  // Only include weeks the user actually registered (confirmed or has real savings).
-  const activeWeeks = ordered.filter((w) => w.confirmed || w.realSaved > 0);
+  // A week is "active" (counts in totals) once the user has touched it:
+  // confirmed, has savings, OR any value differs from the plan defaults.
+  const activeWeeks = ordered.filter(
+    (w) =>
+      w.confirmed ||
+      w.realSaved > 0 ||
+      w.food !== settings.weeklyFoodBudget ||
+      w.received !== settings.weeklyIncome ||
+      w.notes !== ""
+  );
 
   const totalReceived = round2(activeWeeks.reduce((sum, w) => sum + w.received, 0));
   const totalFood = round2(activeWeeks.reduce((sum, w) => sum + w.food, 0));
